@@ -47,7 +47,7 @@ const createNewList = (currentTask) => {
                     viewBox="0 0 24 24"
                     stroke-width="1.5"
                     stroke="currentColor"
-                    class="size-6"
+                    class="size-6 pointer-events-none"
                   >
                     <path
                       stroke-linecap="round"
@@ -63,7 +63,7 @@ const createNewList = (currentTask) => {
                     viewBox="0 0 24 24"
                     stroke-width="1.5"
                     stroke="currentColor"
-                    class="size-6"
+                    class="size-6 pointer-events-none"
                   >
                     <path
                       stroke-linecap="round"
@@ -75,31 +75,75 @@ const createNewList = (currentTask) => {
               </div>
             </div>`
 
-    const listTask = list.  querySelector(".list-task")
-    const listDoneCheck = list.querySelector(".list-done-check");
+    // const listTask = list.  querySelector(".list-task")
+    // const listDoneCheck = list.querySelector(".list-done-check");
 
-    listDoneCheck.addEventListener("change",() => {
-        updateDoneTaskTotal()
-        listTask.classList.toggle("line-through")
-        list.classList.toggle("opacity-40")
-        list.classList.toggle("scale-75")
-        // list.classList.toggle("rotate-180")
-        list.classList.add("duration-300")
-        if(listDoneCheck.checked){
-          listEditBtn.setAttribute("disabled",true) 
-        }else{
-          listEditBtn.removeAttribute("disabled")
-        }
-    })
-    //list delete functionality
-    const listDelBtn = list.querySelector(".list-del-btn")
-    listDelBtn.addEventListener("click",() => {
+    // listDoneCheck.addEventListener("change",() => {
+    //     updateDoneTaskTotal()
+    //     listTask.classList.toggle("line-through")
+    //     list.classList.toggle("opacity-40")
+    //     list.classList.toggle("scale-75")
+    //     // list.classList.toggle("rotate-180")
+    //     list.classList.add("duration-300")
+    //     if(listDoneCheck.checked){
+    //       listEditBtn.setAttribute("disabled",true) 
+    //     }else{
+    //       listEditBtn.removeAttribute("disabled")
+    //     }
+    // })
+    // //list delete functionality
+    // const listDelBtn = list.querySelector(".list-del-btn")
+    // listDelBtn.addEventListener("click",() => {
+    // if(window.confirm("Are you sure?")){
+    //     list.remove()
+    // }
+    // })
+
+    // const listEditBtn = list.querySelector(".list-edit-btn")
+    // listEditBtn.addEventListener("click",() => {
+    //   listEditBtn.setAttribute("disabled",true)
+    //   listDoneCheck.setAttribute("disabled",true)
+    //   const currentTask = listTask.innerText;
+    //   const newTaskInput = document.createElement("input")
+    //   newTaskInput.className= "border border-stone-950 font-mono px-2 py-1 w-44 focus-visible:outline-none"
+    //   newTaskInput.value = currentTask
+    //   listTask.after(newTaskInput)
+    //   newTaskInput.focus();
+    //   listTask.classList.add("hidden")
+
+    //   newTaskInput.addEventListener("blur",() => {
+    //     listEditBtn.removeAttribute("disabled")
+    //     listDoneCheck.removeAttribute("disabled")
+    //     // console.log('edit finish');
+    //     listTask.innerText = newTaskInput.value;
+    //     listTask.classList.remove("hidden")
+    //     newTaskInput.remove()
+    //   })
+
+
+    // })
+    
+
+
+    return list;
+}
+
+const listGroupHandler = event => {
+  const list = event.target.closest(".list");
+  
+  if (event.target.classList.contains("list-del-btn")){
     if(window.confirm("Are you sure?")){
-        list.remove()
+        list.remove();
+        updateDoneTaskTotal();
+        updateTaskTotal()
     }
-    })
-
+    console.log("u del");
+  }
+  if(event.target.classList.contains("list-edit-btn")){
+    
     const listEditBtn = list.querySelector(".list-edit-btn")
+    const listDoneCheck = list.querySelector(".list-done-check");
+    const listTask = list.  querySelector(".list-task")
     listEditBtn.addEventListener("click",() => {
       listEditBtn.setAttribute("disabled",true)
       listDoneCheck.setAttribute("disabled",true)
@@ -111,7 +155,7 @@ const createNewList = (currentTask) => {
       newTaskInput.focus();
       listTask.classList.add("hidden")
 
-      newTaskInput.addEventListener("blur",() => {
+      newTaskInput.addEventListener("change",() => {
         listEditBtn.removeAttribute("disabled")
         listDoneCheck.removeAttribute("disabled")
         // console.log('edit finish');
@@ -119,15 +163,30 @@ const createNewList = (currentTask) => {
         listTask.classList.remove("hidden")
         newTaskInput.remove()
       })
-
-
-    })
-    
-
-
-    return list;
+  })
 }
 
+  //done check
+  if (event.target.classList.contains("list-done-check")){
+    const listEditBtn = list.querySelector(".list-edit-btn")
+    console.log("U done with the list");
+    const listTask = list.  querySelector(".list-task")
+    const listDoneCheck = list.querySelector(".list-done-check");
+    
+        updateDoneTaskTotal()
+        listTask.classList.toggle("line-through")
+        list.classList.toggle("opacity-40")
+        list.classList.toggle("scale-75")
+        // list.classList.toggle("rotate-180")
+        list.classList.add("duration-300")
+        if(listDoneCheck.checked){
+          listEditBtn.setAttribute("disabled",true) 
+        }else{
+          listEditBtn.removeAttribute("disabled")
+        }
+  }
+}
 
 //event
-addTaskBtn.addEventListener("click",addList)
+addTaskBtn.addEventListener("click",addList);
+listGroup.addEventListener("click",listGroupHandler)
